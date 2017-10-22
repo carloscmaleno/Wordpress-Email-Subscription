@@ -217,6 +217,24 @@ add_action('future_to_publish', 'emailSub_publishPost',100);
 
 
 /**
+ * This function is executed when a post is deleted or moved to draft
+ *
+ * @param int|WP_Post $post
+ */
+function emailSub_dePublishPost( $post ) {
+
+	$postId = (is_object($post)? $post->ID : $post);
+
+	//remove deleted post from Spool
+	$emailDb = new EmailSubscriptionDatabase();
+	$emailDb->removeAllToSpool( $postId );
+}
+add_action('delete_post', 'emailSub_dePublishPost',100);
+add_action('wp_trash_post', 'emailSub_dePublishPost',100);
+add_action('publish_to_draft', 'emailSub_dePublishPost',100);
+
+
+/**
  * Return the post excerpt
  * 
  * @param unknown_type $post

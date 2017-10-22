@@ -122,6 +122,17 @@ class EmailSubscriptionDatabase{
         );
     }
 
+	/**
+	 * Remove all addresses from db to the email spool
+	 *
+	 * @param int $postId
+	 */
+	public function removeAllToSpool($postId){
+		global $wpdb;
+
+		$wpdb->delete($this->spool_table, array('post_id' => $postId));
+	}
+
     /**
      * Add one email to spool.. Like an administrator when testing..
      *
